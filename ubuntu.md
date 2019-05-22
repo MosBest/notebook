@@ -42,19 +42,24 @@
 	功能：与head类似，只是tail是打印后几行的。
 
 6. echo 
+
 	功能：　打印输出
+    
 7.  \> 和　\>\>
+
 	这两个符号　理解为　“重定向”
     ```shell
     echo "大家好"　> aaa.txt (将“大家好”　输入到aaa.txt . 如果aaa.txt 之前有内容，那么之前的内容就会背覆盖)
     echo "大家好"　>> aaa.txt (将“大家好”　zjia到aaa.txt . 如果aaa.txt 之前有内容，那么之前的内容就会背覆盖)
     ```
 8. nano
+
 	nano 是一个文字编辑器, 功能和vim, emacs类似，只是nano更加适用于初学者.
 	
     符号(^)代表键盘上的Control键
 
 9. mv
+
 	功能：移动文件
 	```shell
     mv journal-2017-01-24.txt 　Journal　（mv 文件/文件夹路径　目标地址文件夹路径）
@@ -85,21 +90,24 @@
     rm -r document (-r 指的是　迭代的意思)
     ```
 12.  man
+
 	功能：使用man命令可以查看　其他每个命令的帮助文档
     ```shell
     man ls
     (然后键入“/abs”即可查看ls帮助文档中所有出现“abs”的位置。按n键以搜索下一个出现的单词，如果要转到上一个出现类型Shift + n。当您完成查看手册页时，请键入q以返回提示。)
     ```
 13.  apropos
+
 	功能：如果你忘记了你正在寻找的命令的名字呢？您可以使用apropos搜索所有可用命令及其描述。
     ```shell
     比如你忘了什么命令可以调开一个编辑器，那么
     apropos editor
     结果是：
-    ## ed(1), red(1)            - text editor
-## nano(1)                  - Nano's ANOther editor, an enhanced free Pico clone
-## sed(1)                   - stream editor
-## vim(1)                   - Vi IMproved, a programmers text editor
+    
+        $ ed(1), red(1)            - text editor
+        $ nano(1)                  - Nano's ANOther editor, an enhanced free Pico clone
+        $ sed(1)                   - stream editor
+        $ vim(1)                   - Vi IMproved, a programmers text editor
     ```
 14.  “　*　”　通配符
 
@@ -202,7 +210,7 @@
         
 	shasum states.txt
         ## 588e9de7ffa97268b2448927df41760abd3369a9  states.txt
-shasum states_copy.txt
+	shasum states_copy.txt
         ## 588e9de7ffa97268b2448927df41760abd3369a9  states_copy.txt
     ```
 24. 管道 ( | )
@@ -232,7 +240,7 @@ shasum states_copy.txt
     ```   
     target: dependencies...
         commands...
-    (注意：commands相对于target是有一个tab的缩进的，有的系统是２个空格，有的是８个空格。所以，不能够用空格，直接一个缩进就可以了)
+    (注意：commands相对于target是有一个tab的缩进的，有的系统是２个空格，有的是８个空格。	所以，不能够用空格，直接一个缩进就可以了)
     ```
     以下为所有例子
     ```
@@ -252,12 +260,12 @@ shasum states_copy.txt
     
     #　因为makefile中的内容draft_journal_entry.txt:后面没有跟依赖关系，所以makefile的draft_journal_entry.txt不会随着外界改变
     zhaodao@wayne-MS-7B24:~/cvp/aa$ make draft_journal_entry.txt
-make: “draft_journal_entry.txt”已是最新。
+	make: “draft_journal_entry.txt”已是最新。
 ```
 ```
     # 依赖关系
     zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "1. 2017-06-15-In-Boston" > toc.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
         (写入的内容是
             draft_journal_entry.txt:
             	touch draft_journal_entry.txt
@@ -266,25 +274,25 @@ zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
 	      	  echo "This journal contains the following number of entries:" > readme.txt
 		        wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
         )
-zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
-echo "This journal contains the following number of entries:" > readme.txt
-wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-draft_journal_entry.txt  makefile  readme.txt  toc.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
-This journal contains the following number of entries:
-1
-# 再一次make readme.txt, 由于依赖的文件toc.txt没有改变，所以readme.txt已是最新。
-zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
-make: “readme.txt”已是最新。
-＃那么现在修改readme.txt的依赖文件toc.txt, 发现readme.txt可以重新make,　且内容也更新了。
-zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "2. 2017-06-16-IQSS-Talk" >> toc.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt
-echo "This journal contains the following number of entries:" > readme.txt
-wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
-This journal contains the following number of entries:
-2
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
+	echo "This journal contains the following number of entries:" > readme.txt
+	wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+	draft_journal_entry.txt  makefile  readme.txt  toc.txt
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
+	This journal contains the following number of entries:
+	1
+	# 再一次make readme.txt, 由于依赖的文件toc.txt没有改变，所以readme.txt已是最新。
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
+	make: “readme.txt”已是最新。
+	＃那么现在修改readme.txt的依赖文件toc.txt, 发现readme.txt可以重新make,　且内容也更新了。
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "2. 2017-06-16-IQSS-Talk" >> toc.txt
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt
+	echo "This journal contains the following number of entries:" > readme.txt
+	wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+	zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
+	This journal contains the following number of entries:
+	2
 ```
 ```
 # 在makefile最前面写入all, 则以后只需输入make，就可以make makefile里面所有的内容。
