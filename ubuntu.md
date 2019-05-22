@@ -294,9 +294,9 @@
 	This journal contains the following number of entries:
 	2
 ```
-```
-# 在makefile最前面写入all, 则以后只需输入make，就可以make makefile里面所有的内容。
-# 在makefile最后面使用clean, 则可以消除文件
+```python
+    # 在makefile最前面写入all, 则以后只需输入make，就可以make makefile里面所有的内容。
+    # 在makefile最后面使用clean, 则可以消除文件
 zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
 	（写入的内容是:
     	all: draft_journal_entry.txt readme.txt
