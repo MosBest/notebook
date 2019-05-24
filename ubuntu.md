@@ -166,7 +166,8 @@
 
 18. 　〜/ .bash_history
 	
-    功能：　每当我们关闭终端时，我们最近的命令都会写入〜/ .bash_history文件。
+    功能：　每当我们关闭终端时，我们使用过的命令都会写入〜/ .bash_history文件。
+    此文件仅在您关闭终端时更新。而history功能一样，只是实时更新。不需要关闭终端才会更新。
     
     ```shell
     head -n 5 ~/.bash_history
