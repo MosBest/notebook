@@ -206,3 +206,58 @@ Type in a string and then press Enter:
 Hello!
 You entered: Hello!
 ```
+## bool
+true 和　false
+```
+>>> ture
+>>> false
+```
+## ubuntu每一个命令执行后，都会有一个返回值
+ubuntu每一个命令执行后，都会有一个返回值。
+
+程序的退出状态是整数，最后一个程序运行的退出状态存储在问号变量（$？）
+```
+>>> this_command_does_not_exist
+	Error in running command bash
+
+>>> echo $?
+	 127 (如果是因为　命令不存在，那么退出状态为127)
+
+>>> echo "I will succeed."
+ 	I will succeed.
+>>> echo $? 
+	0 (成功程序的退出状态为0)
+
+>>> true
+>>> echo $?
+	0 (true的退出状态为0)
+>>> false
+>>> echo $?
+	1 (false的退出状态为1)
+```
+
+## 逻辑运算符 AND运算符（&&）和OR运算符（||）
+在AND运算符的情况下，只有在&&左侧的程序**退出状态为0**时，才会执行&&右侧的程序。
+
+在OR运算符的情况下, 仅当左侧的命令失败并因此具有除0以外的退出状态时, 命令在||的右侧才执行。
+
+您可以在命令中组合AND和OR运算符，这些命令从左到右进行求值。
+
+```
+true && echo "Program 1 was executed."
+false && echo "Program 2 was executed."
+
+false && true && echo Hello
+echo 1 && false && echo 3
+echo Athos && echo Porthos && echo Aramis
+
+true || echo "Program 1 was executed."
+false || echo "Program 2 was executed."
+
+false || echo 1 || echo 2
+echo 3 || false || echo 4
+echo Athos || echo Porthos || echo Aramis
+
+echo Athos || echo Porthos && echo Aramis
+echo Gaspar && echo Balthasar || echo Melchior
+```
