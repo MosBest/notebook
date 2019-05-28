@@ -246,90 +246,89 @@
     ```
     以下为所有例子
     ```
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
+                (写入的内容是
+                draft_journal_entry.txt:
+                    touch draft_journal_entry.txt
+                )
+
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+        makefile
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ make draft_journal_entry.txt
+        touch draft_journal_entry.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+        draft_journal_entry.txt  makefile
+
+        #　因为makefile中的内容draft_journal_entry.txt:后面没有跟依赖关系，所以makefile的draft_journal_entry.txt不会随着外界改变
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ make draft_journal_entry.txt
+        make: “draft_journal_entry.txt”已是最新。
+    ```
+    ```
+        # 依赖关系
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "1. 2017-06-15-In-Boston" > toc.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
             (写入的内容是
+                draft_journal_entry.txt:
+                    touch draft_journal_entry.txt
+
+                readme.txt: toc.txt
+                  echo "This journal contains the following number of entries:" > readme.txt
+                    wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+            )
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
+        echo "This journal contains the following number of entries:" > readme.txt
+        wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+        draft_journal_entry.txt  makefile  readme.txt  toc.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
+        This journal contains the following number of entries:
+        1
+        # 再一次make readme.txt, 由于依赖的文件toc.txt没有改变，所以readme.txt已是最新。
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
+        make: “readme.txt”已是最新。
+        ＃那么现在修改readme.txt的依赖文件toc.txt, 发现readme.txt可以重新make,　且内容也更新了。
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "2. 2017-06-16-IQSS-Talk" >> toc.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt
+        echo "This journal contains the following number of entries:" > readme.txt
+        wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+        zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
+        This journal contains the following number of entries:
+        2
+    ```
+    ```python
+        # 在makefile最前面写入all, 则以后只需输入make，就可以make makefile里面所有的内容。
+        # 在makefile最后面使用clean, 则可以消除文件
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
+        （写入的内容是:
+            all: draft_journal_entry.txt readme.txt
+
             draft_journal_entry.txt:
                 touch draft_journal_entry.txt
-            )
-            
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-    makefile
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ make draft_journal_entry.txt
-    touch draft_journal_entry.txt
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-    draft_journal_entry.txt  makefile
-    
-    #　因为makefile中的内容draft_journal_entry.txt:后面没有跟依赖关系，所以makefile的draft_journal_entry.txt不会随着外界改变
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ make draft_journal_entry.txt
-	make: “draft_journal_entry.txt”已是最新。
-```
-```
-    # 依赖关系
-    zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "1. 2017-06-15-In-Boston" > toc.txt
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
-        (写入的内容是
-            draft_journal_entry.txt:
-            	touch draft_journal_entry.txt
-    		
+
             readme.txt: toc.txt
-	      	  echo "This journal contains the following number of entries:" > readme.txt
-		        wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-        )
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
-	echo "This journal contains the following number of entries:" > readme.txt
-	wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-	draft_journal_entry.txt  makefile  readme.txt  toc.txt
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
-	This journal contains the following number of entries:
-	1
-	# 再一次make readme.txt, 由于依赖的文件toc.txt没有改变，所以readme.txt已是最新。
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt 
-	make: “readme.txt”已是最新。
-	＃那么现在修改readme.txt的依赖文件toc.txt, 发现readme.txt可以重新make,　且内容也更新了。
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ echo "2. 2017-06-16-IQSS-Talk" >> toc.txt
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ make readme.txt
-	echo "This journal contains the following number of entries:" > readme.txt
-	wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-	zhaodao@wayne-MS-7B24:~/cvp/aa$ cat readme.txt 
-	This journal contains the following number of entries:
-	2
-```
-```python
-    # 在makefile最前面写入all, 则以后只需输入make，就可以make makefile里面所有的内容。
-    # 在makefile最后面使用clean, 则可以消除文件
-zhaodao@wayne-MS-7B24:~/cvp/aa$ nano makefile
-	（写入的内容是:
-    	all: draft_journal_entry.txt readme.txt
-    
-		draft_journal_entry.txt:
-  			touch draft_journal_entry.txt
-            
-		readme.txt: toc.txt
-  			echo "This journal contains the following number of entries:" > readme.txt
- 			 wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-             
-		clean:
-  			rm draft_journal_entry.txt
-  			rm readme.txt
-    ）
-zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-draft_journal_entry.txt  makefile  readme.txt  toc.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ make clean
-rm draft_journal_entry.txt
-rm readme.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-makefile  toc.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ make
-touch draft_journal_entry.txt
-echo "This journal contains the following number of entries:" > readme.txt
-wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
-zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
-draft_journal_entry.txt  makefile  readme.txt  toc.txt
+                echo "This journal contains the following number of entries:" > readme.txt
+                 wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+
+            clean:
+                rm draft_journal_entry.txt
+                rm readme.txt
+        ）
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+    draft_journal_entry.txt  makefile  readme.txt  toc.txt
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ make clean
+    rm draft_journal_entry.txt
+    rm readme.txt
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+    makefile  toc.txt
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ make
+    touch draft_journal_entry.txt
+    echo "This journal contains the following number of entries:" > readme.txt
+    wc -l toc.txt | egrep -o "[0-9]+" >> readme.txt
+    zhaodao@wayne-MS-7B24:~/cvp/aa$ ls
+    draft_journal_entry.txt  makefile  readme.txt  toc.txt
 
     ```
-   
 26. ubuntu各种压缩及解压
 
 ```
