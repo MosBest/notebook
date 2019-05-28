@@ -404,6 +404,7 @@ draft_journal_entry.txt  makefile  readme.txt  toc.txt
     解压后请将sEx拷贝到/usr/bin目录（其他由$PATH环境变量指定的目录也可以）：
     [root@www2 tmp]# cp sEx /usr/bin/
 ```
+
 27. ubuntu文件重命名
 mv命令　或者　rename命令
 
