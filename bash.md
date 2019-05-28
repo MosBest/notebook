@@ -259,5 +259,483 @@ echo 3 || false || echo 4
 echo Athos || echo Porthos || echo Aramis
 
 echo Athos || echo Porthos && echo Aramis
-echo Gaspar && echo Balthasar || echo Melchior
+echo Gaspar &jieba& echo Balthasar || echo Melchior
 ```
+
+## 条件表达式
+条件表达式要么比较两个值，要么询问关于一个值的问题。条件表达式总是在双括号（[[]]）之间，它们使用逻辑标志或逻辑运算符。
+
+如果我们想看一个整数是否大于另一个，我们可以使用-gt（大于号的标志）
+```
+[[ 4 -gt 3 ]]
+```
+上面的逻辑表达式是：4大于3吗？没有结果打印到控制台，所以让我们检查该表达式的退出状态。
+```
+echo $?
+
+返回　0
+```
+看起来该程序的退出状态为0，退出状态与true相同。这个条件表达式是[[4 -gt 3]]等于true，当然我们知道它在逻辑上是一致的
+```
+[[ 3 -gt 4 ]]
+```
+同样，没有任何内容打印到控制台，所以我们将查看退出状态：
+```
+echo $?
+
+返回 1
+```
+显然3不大于4，所以这个错误的逻辑表达式导致退出状态为1，这与false的退出状态相同！因为它们具有相同的退出状态[[3 -gt 4]]，而false基本上是等效的。
+```
+[[ 4 -gt 3 ]] && echo t || echo f
+[[ 3 -gt 4 ]] && echo t || echo f
+## t
+## f
+
+您可以使用-e逻辑标志测试文件是否存在
+[[ -e math.sh ]] && echo t || echo f
+
+其他代码示例
+number=7
+[[ $number -gt 3 ]] && echo t || echo f
+[[ $number -gt 10 ]] && echo t || echo f
+[[ -e $number ]] && echo t || echo f
+
+## t
+## f
+## f
+```
+
+```
+-gt 大于
+-ge　大于等于
+-eq　等于
+-ne　不等于
+-le　小于等于
+-lt　小于
+-e　某个文件是存在
+-d　某个文件夹是否存在
+-z　字符串的长度为０
+-n　字符串的长度不为０
+!　逻辑　非
+=~　正则表达式匹配运算符
+=　字符串等于
+!=　字符串不等于
+```
+
+正则表达式匹配运算符　=~ :
+
+正则表达式匹配运算符将字符串与正则表达式进行比较，如果字符串与正则表达式匹配，则表达式等效于true，否则等效于false。
+```
+[[ rhythms =~ [aeiou] ]] && echo t || echo f
+my_name=sean
+[[ $my_name =~ ^s.+n$ ]] && echo t || echo f
+
+## f
+## t
+```
+
+## if and else
+if
+```
+#!/usr/bin/env bash
+# File: simpleif.sh
+
+echo "Start program"
+($1表示　命令行中　传入的第一个参数　比如：　bash simpleif.sh 77)
+if [[ $1 -eq 4 ]]
+then
+  echo "You entered $1"
+fi
+
+echo "End program"
+```
+然后在命令行中输入：
+```
+bash simpleif.sh 77
+bash simpleif.sh 4
+```
+
+else
+```
+#!/usr/bin/env bash
+# File: simpleifelse.sh
+
+echo "Start program"
+
+if [[ $1 -eq 4 ]]
+then
+  echo "Thanks for entering $1"
+else
+  echo "You entered: $1, not what I was looking for."
+fi
+
+echo "End program"
+```
+然后在命令行中输入：
+```
+bash simpleifelse.sh 4
+bash simpleifelse.sh 3
+```
+
+elif
+```
+#!/usr/bin/env bash
+# File: simpleelif.sh
+
+if [[ $1 -eq 4 ]]
+then
+  echo "$1 is my favorite number"
+elif [[ $1 -gt 3 ]]
+then
+  echo "$1 is a great number"
+else
+  echo "You entered: $1, not what I was looking for."
+fi
+```
+然后在命令行中输入：
+```
+bash simpleifelse.sh 4
+bash simpleifelse.sh 5
+```
+
+```
+#!/usr/bin/env bash
+# File: condexif.sh
+
+if [[ $1 -gt 3 ]] && [[ $1 -lt 7 ]]
+then
+  echo "$1 is between 3 and 7"
+elif [[ $1 =~ "Jeff" ]] || [[ $1 =~ "Roger" ]] || [[ $1 =~ "Brian" ]]
+then
+  echo "$1 works in the Data Science Lab"
+else
+  echo "You entered: $1, not what I was looking for."
+fi
+```
+```
+bash condexif.sh 2
+bash condexif.sh 4
+bash condexif.sh 6
+bash condexif.sh Jeff
+bash condexif.sh Brian
+bash condexif.sh Sean
+
+```
+
+## 数组 array
+Bash中的数组是有序的值列表。列表使用括号（）创建，并使用空格分隔列表中的每个元素
+```
+aa = (name1 aa bbb ccc ddd eee fff)
+```
+要检索数组，您需要使用参数扩展，它涉及美元符号和大括号（$ {}）。
+
+数组中元素的位置从零开始编号。
+
+要获取此数组的第一个元素，请使用$ {plagues [0]}。
+```
+echo ${a[0]}
+```
+
+要获得a的所有元素，请在方括号之间使用星号（*）:
+```
+echo ${a[*]}
+```
+更改数组内的值
+```
+a[1] = qqq
+```
+使用切片获取数组的一部分
+```
+echo ${a[*]:5:3}
+从数组a中第六个元素开始得到3个数组元素（记住，第六个元素的索引为5）。
+```
+您可以使用井号（＃）找到数组的长度：
+```
+echo ${#a[*]}
+```
+您可以使用运算符（+=）将一个数组添加到另一个数组的末尾：
+```
+a = (ttt yyy uuu)
+echo ${a[*]}
+a += (www eee rrr)
+echo ${a[*]}
+```
+## 创建连续序列
+### {..}
+```
+echo {0..9}
+
+## 0 1 2 3 4 5 6 7 8 9
+
+echo {a..e}
+echo {W..Z}
+
+## a b c d e
+## W X Y Z
+
+echo a{0..4}
+echo b{0..4}c
+
+## a0 a1 a2 a3 a4
+## b0c b1c b2c b3c b4c
+
+echo {1..3}{A..C}
+
+## 1A 1B 1C 2A 2B 2C 3A 3B 3C
+
+要使用eval
+start=4
+end=9
+echo {$start..$end}
+eval echo {$start..$end}
+
+## {4..9}
+## 4 5 6 7 8 9
+```
+### {,}
+```
+echo {{1..3},{a..c}}
+(注意　不要多加空格，要不然就错了)
+## 1 2 3 a b c
+
+echo {Who,What,Why,When,How}?
+## Who? What? Why? When? How?
+```
+
+## 循环
+for
+```
+#!/usr/bin/env bash
+# File: forloop.sh
+
+echo "Before Loop"
+
+for i in {1..3}
+do
+    echo "i is equal to $i"
+done
+
+echo "After Loop"
+```
+```
+#!/usr/bin/env bash
+# File: manyloops.sh
+
+echo "Explicit list:"
+
+for picture in img001.jpg img002.jpg img451.jpg
+do
+    echo "picture is equal to $picture"
+done
+
+echo ""
+echo "Array:"
+
+stooges=(curly larry moe)
+
+for stooge in ${stooges[*]}
+do
+    echo "Current stooge: $stooge"
+done
+
+echo ""
+echo "Command substitution:"
+
+for code in $(ls)
+do
+    echo "$code is a bash script"
+done
+bash manyloops.sh
+## Explicit list:
+## picture is equal to img001.jpg
+## picture is equal to img002.jpg
+## picture is equal to img451.jpg
+##
+## Array:
+## Current stooge: curly
+## Current stooge: larry
+## Current stooge: moe
+##
+## Command substitution:
+## bigmath.sh is a bash script
+## condexif.sh is a bash script
+## forloop.sh is a bash script
+## letsread.sh is a bash script
+## manyloops.sh is a bash script
+## math.sh is a bash script
+## nested.sh is a bash script
+## simpleelif.sh is a bash script
+## simpleif.sh is a bash script
+## simpleifelse.sh is a bash script
+## vars.sh is a bash script
+```
+
+while
+```
+#!/usr/bin/env bash
+# File: whileloop.sh
+
+count=3
+
+while [[ $count -gt 0 ]]
+do
+  echo "count is equal to $count"
+  let count=$count-1
+done
+```
+
+```
+!/usr/bin/env bash
+# File: foreverloop.sh
+
+count=3
+
+while [[ $count -gt 0 ]]
+do
+  echo "count is equal to $count"
+  let count=$count+1              # We only changed this line!
+done
+
+## ...
+## count is equal to 29026
+## count is equal to 29027
+## count is equal to 29028
+## count is equal to 29029
+## count is equal to 29030
+## ...
+
+```
+
+## 函数
+```
+function 函数名 {
+  # code here
+}
+```
+比如：
+```
+#!/usr/bin/env bash
+# File: hello.sh
+
+function hello {
+  echo "Hello"
+}
+
+```
+
+函数的输入参数　在　命令行　中提供
+
+函数与单独的bash脚本共享许多行为，包括它们如何处理参数。通常的bash脚本参数（如$ 1，$ 2和$ @）都在函数内工作，这允许您指定函数参数。
+```
+#!/usr/bin/env bash
+# File: ntmy.sh
+
+function ntmy {
+  echo "Nice to meet you $1"
+}
+```
+那么命令行中可执行
+```
+bash ntmy.sh jeck
+```
+### source命令 (用于创造自己的命令)
+到目前为止，在本章中我们一直在使用`bash　xxx.sh`的语法来执行脚本的内容。现在我们将开始使用source命令，它允许我们将　bash脚本中的函数　定义为　命令行的命令。
+```
+source ntmy.sh
+ntmy Jeff
+ntmy Philip
+ntmy Jenny
+
+## Nice to meet you Jeff
+## Nice to meet you Philip
+## Nice to meet you Jenny
+
+```
+就像那样，你已经创造了自己的命令！关闭当前shell后，您将无法访问ntmy命令，但在之后的内容中，我们将讨论如何设置自己的命令，以便始终可以访问它们。
+
+### $@ 接收命令行所有的参数
+```
+#!/usr/bin/env bash
+# File: addseq.sh
+
+function addseq {
+  sum=0
+
+  for element in $@
+  do
+    let sum=sum+$element
+  done
+
+  echo $sum
+}
+```
+结果是
+```
+source addseq.sh
+addseq 12 90 3
+addseq 0 1 1 2 3 5 8 13
+addseq
+addseq 4 6 6 6 4
+
+## 105
+## 33
+## 0
+## 26
+```
+### local　命令
+我们在addseq.sh里面实现了一个函数。
+
+然后，执行这个函数：
+```
+sourch addseq.sh
+addseq 3 0 0
+```
+或者直接地
+```
+bash addseq.sh 3 0 0
+```
+注意：执行addseq.sh后，　addseq.sh函数里面的变量　将被视为　全局变量（没错，函数里面的变量被视为全局变量，而不是局部变量）。　也就是说，执行完addseq.sh，　可以在命令行中直接访问（设置可以修改）　addseq.sh 里面的　的变量。
+```
+比如可在命令行中访问　addseq.sh　中的变量$sum
+
+echo $sum
+```
+
+这样做就会有很大的风险，不小心　让函数的值　覆盖了　命令行中关键变量的值　；　不小心　用命令行中关键变量的值　覆盖了　函数里面的值。
+
+解决方案就是：　对函数中　变量　使用local 命令	
+```
+#!/usr/bin/env bash
+# File: addseq2.sh
+
+function addseq2 {
+  local sum=0
+
+  for element in $@
+  do
+    let sum=sum+$element
+  done
+
+  echo $sum
+}
+
+```
+```
+source addseq2.sh
+sum=4444
+addseq2 5 10 15 20
+echo $sum
+
+## 50
+## 4444
+```
+### 函数返回值
+```
+my_sum=$(addseq2 5 10 15 20)
+echo $my_sum
+
+## 50
+```
+
+## 文件权限
