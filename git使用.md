@@ -1,6 +1,8 @@
 版本控制系统（Version Control System VCS）
 
 # git 的使用
+## 
+
 ## 不使用 git clone的方法
 假如将 /learngit 文件夹作为一个 项目，则
 1. cd /learngit 

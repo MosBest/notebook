@@ -890,10 +890,5 @@ $path　的用途是：
 就可以。
   ```
 
-```
-echo "source ~/Code/addseq2.sh" >> ~/.bash_profile
-```
-
-
 
 

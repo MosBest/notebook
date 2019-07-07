@@ -1,0 +1,11 @@
+https://www.biendata.com/competition/datagrand/data/
+https://www.kaggle.com/c/facebook-recruiting-iii-keyword-extraction/discussion
+https://github.com/crownpku/Information-Extraction-Chinese
+https://blog.csdn.net/gaofeipaopaotang/article/details/84205049
+https://blog.csdn.net/u014033218/article/details/88049101
+http://lic2019.ccf.org.cn/kg
+https://aistudio.baidu.com/aistudio/competition
+https://github.com/Brook-Lan/fddc02_intro
+https://www.jianshu.com/p/e80ae09f60fd
+https://github.com/baidu/information-extraction
+https://github.com/baidu/information-extraction
