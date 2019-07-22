@@ -1,4 +1,3 @@
-### 以下内容全部来源于 https://www.jianshu.com/p/a83a8f5d68dd?utm_campaign=maleskine&utm_content=note&utm_medium=writer_share&utm_source=weibo
 
 #  作用
 让项目运行在一个独立的局部的 Python 环境中，使采用不同环境的项目互不干扰。
